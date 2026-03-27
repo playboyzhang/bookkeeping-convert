@@ -119,9 +119,26 @@ def convert_to_csv_format(transaction, category_map, account_map):
 
 
 def main():
-    # 文件路径
-    json_file = Path("D:/iflow/bookkeeping/sync_20251106_164627.json")
-    csv_file = Path("D:/iflow/bookkeeping/converted_transactions.csv")
+    # 获取脚本所在目录
+    script_dir = Path(__file__).parent
+
+    # 获取用户输入的JSON文件名
+    json_filename = input("请输入JSON文件名（例如：sync_20260327_102528.json）: ").strip()
+    if not json_filename:
+        print("错误：未输入文件名")
+        return
+
+    # 构建输入和输出文件路径（脚本所在目录的相对路径）
+    json_file = script_dir / json_filename
+
+    # 检查文件是否存在
+    if not json_file.exists():
+        print(f"错误：文件不存在: {json_file}")
+        return
+
+    # 生成输出文件名：将.json替换为.csv
+    csv_filename = json_filename.replace('.json', '.csv')
+    csv_file = script_dir / csv_filename
 
     # 解析JSON文件
     print(f"正在解析JSON文件: {json_file}")
